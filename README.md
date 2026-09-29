@@ -20,8 +20,8 @@ The app sends `X-API-Key` with `GET list_settlements`, using zero-based `page` a
 Install Docker Desktop on your Mac, or Docker Engine with the Compose plugin on your server. Use Docker Engine 28 or newer for localhost port isolation. You do not need Python or uv on the host. Builds support both Apple Silicon/ARM64 and Intel/AMD64; CI builds and runs both architectures natively.
 
 ```sh
-git clone https://github.com/halpcomputar/settlement-desk-public-ready.git
-cd settlement-desk-public-ready
+git clone https://github.com/halpcomputar/settlement-desk.git
+cd settlement-desk
 cp .env.example .env
 # Edit .env with your Parse API key and scraper UUID.
 docker compose up --build -d --wait
@@ -72,8 +72,8 @@ These steps also work with a stopped native installation's `data/settlements.sql
 Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and Git, then:
 
 ```sh
-git clone https://github.com/halpcomputar/settlement-desk-public-ready.git
-cd settlement-desk-public-ready
+git clone https://github.com/halpcomputar/settlement-desk.git
+cd settlement-desk
 cp .env.example .env
 uv sync --locked
 uv run python launch.py
@@ -101,8 +101,8 @@ Account balances and accumulated credit usage are not displayed. Listing-respons
 ## Windows
 
 ```powershell
-git clone https://github.com/halpcomputar/settlement-desk-public-ready.git
-cd settlement-desk-public-ready
+git clone https://github.com/halpcomputar/settlement-desk.git
+cd settlement-desk
 Copy-Item .env.example .env
 uv sync --locked
 uv run python launch.py
