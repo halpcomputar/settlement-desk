@@ -170,14 +170,3 @@ uv run python server.py
 Tests use temporary databases and mocked Parse responses; they spend no credits. Application code is in `server.py`; the plain HTML/CSS/JavaScript interface is in `static/`. CI tests Python 3.11 and 3.14 on Linux, macOS, and Windows. `uv.lock` pins dependencies for reproducible installs.
 
 The Docker workflow separately builds on AMD64 and ARM64, checks health and localhost publishing, saves a test review through HTTP, recreates the container, and verifies the review survives in the named volume. It uses disposable sample data and makes no Parse requests. The Dockerfile uses a separate dependency-build stage and an allowlisted build context (`.dockerignore`). See the official [Docker port-publishing documentation](https://docs.docker.com/engine/network/port-publishing/) and [uv Docker guide](https://docs.astral.sh/uv/guides/integration/docker/) for the underlying setup.
-
-## Contributing without publishing personal information
-
-Git records author and committer names and email addresses in every commit. Configure a suitable public identity in each clone before committing. For a generic project identity, run these commands inside this repository (they affect this clone only):
-
-```sh
-git config --local user.name "Settlement Desk contributors"
-git config --local user.email "contributors@settlement-desk.invalid"
-```
-
-Your GitHub account and repository ownership remain visible if you publish the repository. Review patches, PR descriptions, screenshots, logs, and release assets for personal details before uploading. Never commit credentials, local databases, review notes, or exports. Keep local backup copies outside the repository. Do not merge an older private repository's history into this clean repository; transfer reviewed source changes only.
