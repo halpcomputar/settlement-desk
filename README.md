@@ -6,7 +6,15 @@ Built with FastAPI, SQLite, and vanilla JavaScript. Listing data comes from Clas
 
 ## Installation
 
-Requires Docker Engine 28+ with Compose, or Python 3.11–3.14 with [uv](https://docs.astral.sh/uv/getting-started/installation/).
+Choose a [native installation](#native-installation) or [Docker Compose](#docker-compose).
+
+### Native installation
+
+Runs on Linux, macOS, and Windows. Requires [Git](https://git-scm.com/downloads), Python 3.11–3.14, and [uv](https://docs.astral.sh/uv/getting-started/installation/).
+
+The application runs directly from the source checkout. No compilation or frontend build is required.
+
+Clone the repository and create the configuration file:
 
 ```sh
 git clone https://github.com/halpcomputar/settlement-desk.git
@@ -14,7 +22,64 @@ cd settlement-desk
 cp .env.example .env
 ```
 
-### Parse configuration
+In PowerShell, use `Copy-Item .env.example .env` to create the configuration file.
+
+Edit `.env` with the credentials described in [Parse configuration](#parse-configuration). To use the sample listings instead, set `SETTLEMENT_LOAD_SAMPLE=true` before the first start; no Parse credentials are required for sample mode.
+
+Install the locked dependencies:
+
+```sh
+uv sync --locked
+```
+
+This creates the project's `.venv` and installs dependencies from `uv.lock`. Virtual environment activation is not required when using `uv run`.
+
+Start the server:
+
+```sh
+uv run python server.py
+```
+
+Open [localhost:8765](http://127.0.0.1:8765). The server creates `data/settlements.sqlite3` on first start and runs in the foreground; stop it with `Ctrl+C`. For persistent operation, configure a service manager to run the server from the project directory.
+
+Alternatively, `uv run python launch.py` starts the server and opens the dashboard in the default browser.
+
+To update, stop the server, then run:
+
+```sh
+git pull --ff-only
+uv sync --locked
+uv run python server.py
+```
+
+### Docker Compose
+
+Requires Git and Docker Engine 28+ with Compose.
+
+```sh
+git clone https://github.com/halpcomputar/settlement-desk.git
+cd settlement-desk
+cp .env.example .env
+```
+
+Edit `.env` as described in [Parse configuration](#parse-configuration), or set `SETTLEMENT_LOAD_SAMPLE=true` to start with sample listings. Then build and start the container:
+
+```sh
+docker compose up --build -d --wait
+```
+
+Open [localhost:8765](http://127.0.0.1:8765).
+
+The image supports AMD64 and ARM64. Compose binds to `127.0.0.1`, runs as a non-root user with a read-only filesystem, and persists the database in the `settlement-data` volume at `/app/data/settlements.sqlite3`.
+
+To update:
+
+```sh
+git pull --ff-only
+docker compose up --build -d --wait
+```
+
+## Parse configuration
 
 Live listings require a [Parse account](https://parse.bot), available credits, and access to the [ClassAction API](https://parse.bot/marketplace/624a46b3-8cdf-453d-bd77-b84610148502/classaction-org-api) (`classaction-org-api`).
 
@@ -34,36 +99,6 @@ PARSE_SCRAPER_ID=your_scraper_uuid
 The scraper UUID is distinct from the marketplace listing ID. The application calls the REST endpoint directly; no Parse SDK is required. See the [Parse documentation](https://docs.parse.bot) for authentication and endpoint details.
 
 Credentials are optional for previewing the interface. Set `SETTLEMENT_LOAD_SAMPLE=true` before creating a database to load three historical example listings.
-
-### Docker
-
-```sh
-docker compose up --build -d --wait
-```
-
-Open [localhost:8765](http://127.0.0.1:8765).
-
-The image supports AMD64 and ARM64. Compose binds to `127.0.0.1`, runs as a non-root user with a read-only filesystem, and persists the database in the `settlement-data` volume at `/app/data/settlements.sqlite3`.
-
-To update:
-
-```sh
-git pull --ff-only
-docker compose up --build -d --wait
-```
-
-### Python
-
-```sh
-uv sync --locked
-uv run python launch.py
-```
-
-The launcher starts the server and opens the dashboard. To run without opening a browser:
-
-```sh
-uv run python server.py
-```
 
 ## Configuration
 
