@@ -1,0 +1,10 @@
+# Allowlist the image's inputs. Secrets, local state, Git, and runtimes stay out.
+**
+!Dockerfile
+!pyproject.toml
+!uv.lock
+!server.py
+!static/
+!static/**
+!sample/
+!sample/settlements.json

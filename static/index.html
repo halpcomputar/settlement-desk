@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="desk-token" content="__DESK_TOKEN__"><title>Settlement desk · Your review workspace</title><link rel="icon" href="/static/favicon.svg" type="image/svg+xml"><script src="/static/theme.js"></script><link rel="stylesheet" href="/static/style.css"><script defer src="/static/app.js"></script></head>
+<body>
+<aside class="sidebar">
+  <a class="brand" href="/" aria-label="Settlement desk home"><span class="brand-icon">s<span>·</span></span><span>settlement<br><strong>desk</strong></span></a>
+  <div class="nav-label">YOUR WORKSPACE</div>
+  <nav aria-label="Settlement views">
+    <button class="nav-item active" data-view="all"><span class="nav-symbol">▤</span> All settlements <span class="nav-count" id="all-count">—</span></button>
+    <button class="nav-item" data-view="maybe"><span class="nav-symbol">☆</span> Shortlist <span class="nav-count" id="maybe-count">—</span></button>
+    <button class="nav-item" data-view="claimed"><span class="nav-symbol">✓</span> Claimed <span class="nav-count" id="claimed-count">—</span></button>
+    <button class="nav-item" data-view="not_applicable"><span class="nav-symbol">⊘</span> Not applicable</button>
+  </nav>
+  <div class="sidebar-bottom"><div class="local-label"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Stored on this computer<small>Your reviews stay private.</small></span></div></div>
+</aside>
+<main>
+  <header class="topbar"><span>PERSONAL WORKSPACE <span class="slash">/</span> SETTLEMENTS</span><div class="topbar-actions"><button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false">Night mode</button><span class="local-pill">Local only</span></div></header>
+  <section class="page-header"><div><h1 id="view-title">All settlements</h1><p>Find the ones worth a closer look.</p></div><div class="header-actions"><a class="button secondary" href="/api/export" download>Export CSV</a><button class="button secondary" id="find-more-open" disabled>Find more settlements</button><button class="button primary" id="refresh-open"><span aria-hidden="true">↻</span> Refresh listings</button></div></section>
+  <section class="stats" aria-label="Review overview"><div class="stat"><span>Saved settlements</span><strong id="saved-stat">—</strong><small id="coverage-label">Saved collection</small></div><div class="stat"><span>Waiting for review</span><strong id="review-stat">—</strong><small>Your next starting point</small></div><div class="stat"><span>Closing in 30 days</span><strong id="deadline-stat">—</strong><small>Based on listed deadlines</small></div></section>
+  <div class="collection-note" id="sample-note"><span class="note-icon">i</span><span><strong>A small start.</strong> Public sample listings can be loaded for a preview. Refresh to fetch up to 50 recent listings.</span></div>
+  <p id="discovery-status" class="discovery-status" role="status" aria-live="polite"></p>
+  <section class="workspace" aria-label="Settlement review">
+    <div class="list-panel">
+      <div class="list-header"><h2>Your collection <span id="result-count"></span></h2><label class="sort-label">Sort <select id="sort" aria-label="Sort settlements"><option value="deadline">Deadline first</option><option value="name">Name A–Z</option></select></label></div>
+      <div class="search-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input type="search" id="search" placeholder="Search companies or eligibility…" aria-label="Search companies or eligibility"></div>
+      <div class="filters"><label>Review status<select id="status-filter"><option value="">Any status</option><option value="unreviewed">Unreviewed</option><option value="maybe">Maybe relevant</option><option value="claimed">Claimed</option><option value="not_applicable">Not applicable</option></select></label><label>Proof<select id="proof-filter"><option value="">Any requirement</option><option value="No">No proof listed</option><option value="Yes">Proof required</option><option value="unknown">Unclear</option></select></label><label>Deadline<select id="deadline-filter"><option value="">Any deadline</option><option value="30">Within 30 days</option><option value="90">Within 90 days</option><option value="past">Past deadline</option><option value="unknown">Unknown</option></select></label><label>Category<select id="category-filter"><option value="">All categories</option><option>Data breach</option><option>Privacy</option><option>Consumer</option><option>Uncategorized</option></select></label><label class="filter-toggle"><input type="checkbox" id="hide-past-deadlines">Hide past deadlines</label></div>
+      <div class="table-head" aria-hidden="true"><span>SETTLEMENT / ELIGIBILITY</span><span>DEADLINE</span></div>
+      <div id="settlement-list" aria-label="Settlement results"><div class="empty">Loading saved settlements…</div></div>
+      <footer class="list-footer"><span id="last-sync">Reading local data…</span><button id="clear-filters" class="text-button">Clear filters</button></footer>
+    </div>
+    <aside id="detail" class="detail-panel" aria-label="Selected settlement"></aside>
+  </section>
+  <footer class="page-footer"><span>Source: ClassAction.org via Parse</span><span>Listings are leads. Check the official notice before claiming.</span></footer>
+</main>
+<dialog id="refresh-dialog"><form method="dialog"><button class="dialog-close" aria-label="Close refresh dialog">×</button></form><div class="dialog-icon">↻</div><h2>Refresh your collection</h2><p>Fetch the first page of recent settlement listings from Parse. Your saved reviews and notes will be kept.</p><div class="refresh-spec"><span>Request limit<strong>1 API request</strong></span><span>Records<strong>Up to 50</strong></span><span>Expected cost<strong>1 credit</strong></span></div><p class="muted">This is a recent-listings refresh, not a complete catalog. Filtering and reviewing saved records uses no credits.</p><div class="dialog-actions"><button class="button secondary" id="refresh-cancel">Cancel</button><button class="button primary" id="refresh-confirm">Fetch recent listings</button></div><p id="refresh-error" role="alert"></p></dialog>
+<dialog id="find-more-dialog" aria-labelledby="find-more-title"><form method="dialog"><button class="dialog-close" aria-label="Close find more dialog">×</button></form><div class="dialog-icon">+</div><h2 id="find-more-title">Find more settlements</h2><p>Check the next page from Parse for cases you haven't saved yet. Existing settlements won't be duplicated, and your reviews and notes will be kept.</p><div class="refresh-spec"><span>Request limit<strong>1 API request</strong></span><span>Listings checked<strong>Up to 50</strong></span><span>Estimated cost<strong>1 credit</strong></span></div><p class="muted">Actual charging is controlled by Parse. A page may contain existing cases or no new results. Each search remembers where to continue; empty or repeated pages stop the search.</p><div class="dialog-actions"><button class="button secondary" id="find-more-cancel">Cancel</button><button class="button primary" id="find-more-confirm">Find more settlements</button></div><p id="find-more-error" role="alert"></p></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+</body></html>

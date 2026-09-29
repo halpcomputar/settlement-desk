@@ -1,0 +1,32 @@
+name: settlement-desk
+services:
+  app:
+    build: .
+    image: settlement-desk:local
+    restart: unless-stopped
+    init: true
+    ports:
+      - "127.0.0.1:${SETTLEMENT_PORT:-8765}:8765"
+    environment:
+      PARSE_API_KEY: ${PARSE_API_KEY:-}
+      PARSE_SCRAPER_ID: ${PARSE_SCRAPER_ID:-}
+      SETTLEMENT_LOAD_SAMPLE: ${SETTLEMENT_LOAD_SAMPLE:-false}
+      SETTLEMENT_DB: /app/data/settlements.sqlite3
+      SETTLEMENT_PORT: "8765"
+    volumes:
+      - settlement-data:/app/data
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+volumes:
+  settlement-data:

@@ -1,0 +1,38 @@
+{
+  "fetched_at_utc": "2026-09-28T15:54:21.244501-04:00",
+  "settlements": [
+    {
+      "object_id": "24734782002",
+      "name": "Venetian Las Vegas - Data Privacy (California)",
+      "description": "You may be included in this settlement if you are a California resident and accessed the Venetian Las Vegas website between September 18, 2024 and March 16, 2026.",
+      "claim_deadline": "11/24/2026",
+      "payout_amount": "$3.60 - $71.39",
+      "proof_required": "No",
+      "official_website": "https://venetianlasvegassettlement.com/",
+      "is_active": true,
+      "path": ""
+    },
+    {
+      "object_id": "114725000",
+      "name": "Amazon - Return Policy",
+      "description": "You may be included in this settlement if you initiated a return to Amazon or requested a refund regarding a physical product purchased between September 5, 2017 and August 13, 2026.",
+      "claim_deadline": "12/01/2026",
+      "payout_amount": "Varies",
+      "proof_required": "Yes",
+      "official_website": "https://www.returnsettlement.com/",
+      "is_active": true,
+      "path": ""
+    },
+    {
+      "object_id": "18530755001",
+      "name": "Laboratory Services Cooperative - Data Breach",
+      "description": "You may be included in this settlement if your personal information was exposed in the Laboratory Services Cooperative data breach discovered in October 2024.",
+      "claim_deadline": "11/24/2026",
+      "payout_amount": "Up to $6,000",
+      "proof_required": "No",
+      "official_website": "https://www.lscdatasettlement.com/",
+      "is_active": true,
+      "path": ""
+    }
+  ]
+}

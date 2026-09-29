@@ -1,0 +1,30 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local state and exports
+data/
+.test-data/
+*.sqlite*
+*.db
+*.db-*
+*.csv
+*.log
+*.pid
+
+# Runtimes and editor files
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+dist/
+build/
+*.egg-info/

@@ -1,0 +1,11 @@
+[project]
+name = "settlement-desk"
+version = "0.1.0"
+description = "A private, local dashboard for reviewing class action settlements"
+requires-python = ">=3.11,<3.15"
+dependencies = [
+    "fastapi>=0.141.1,<1",
+    "httpx>=0.28.1,<1",
+    "python-dotenv>=1.0,<2",
+    "uvicorn>=0.54.0,<1",
+]

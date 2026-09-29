@@ -1,0 +1,44 @@
+name: Docker
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  container:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            arch: x86_64
+          - runner: ubuntu-24.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
+    env:
+      SETTLEMENT_LOAD_SAMPLE: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Compose configuration
+        run: |
+          cp .env.example .env
+          docker compose config --quiet
+      - name: Build and start
+        run: docker compose up --build --detach --wait --wait-timeout 120
+      - name: Check platform and runtime boundaries
+        env:
+          EXPECTED_ARCH: ${{ matrix.arch }}
+        run: |
+          docker compose exec -T app python -c "import os,pathlib,platform; assert os.getuid() == 10001; assert not pathlib.Path('/app/.env').exists(); assert not pathlib.Path('/app/.git').exists(); assert platform.machine() == '$EXPECTED_ARCH'"
+          test "$(docker inspect --format '{{(index (index .NetworkSettings.Ports "8765/tcp") 0).HostIp}}' "$(docker compose ps --quiet app)")" = "127.0.0.1"
+      - name: Save a review through HTTP
+        run: python3 tests/smoke_docker.py create
+      - name: Recreate container and verify volume persistence
+        run: |
+          docker compose up --detach --force-recreate --wait --wait-timeout 120
+          python3 tests/smoke_docker.py verify
+      - name: Logs on failure
+        if: failure()
+        run: docker compose logs --no-color
+      - name: Remove disposable CI containers and volume
+        if: always()
+        run: docker compose down --volumes
